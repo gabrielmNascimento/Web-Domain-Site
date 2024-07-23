@@ -48,6 +48,11 @@ describe("ETHDaddy", () => {
       expect(result).to.equal(1)
     })
 
+    it('total supply', async () => {
+      const result = await ethDeploy.totalSupply()
+      expect(result).to.equal(0)
+    })
+
   })
   
   describe("Domain", () => {
@@ -64,13 +69,23 @@ describe("ETHDaddy", () => {
     const AMOUNT = ethers.utils.parseUnits("10", 'ether')
 
     beforeEach(async () => {
-      const transaction = await ethDeploy.connect(owner1).mint(ID)
+      const transaction = await ethDeploy.connect(owner1).mint(ID, {value: AMOUNT})
       await transaction.wait()
     })
 
     it("Updates the owner", async() => {
       const owner = await ethDeploy.ownerOf(ID)
       expect(owner).to.be.equal(owner1.address)
+    })
+
+    it("Updates the domain status", async() => {
+      const domain = await ethDeploy.getDomain(ID)
+      expect(domain.isOwned).to.be.equal(true)
+    })
+
+    it("Updates the contract balance", async() => {
+      const result = await ethDeploy.getBalance()
+      expect(result).to.be.equal(AMOUNT)
     })
   })
 

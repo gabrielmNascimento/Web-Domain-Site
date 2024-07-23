@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 contract ETHDaddy is ERC721{
 
     uint256 public supply;
+    uint256 public totalSupply;
     address public owner;
 
     struct Domain {
@@ -33,14 +34,27 @@ contract ETHDaddy is ERC721{
         domains[supply] = Domain(_name, _price, false);
     }
 
-    function mint(uint256 _id) public 
+    function mint(uint256 _id) public payable
     {
+        require(_id != 0);
+        require(_id <= supply);
+        require(domains[_id].isOwned == false);
+        require(msg.value >= domains[_id].price);
+
+        domains[_id].isOwned = true;
+        totalSupply++;
+
         _safeMint(msg.sender, _id);
     }
 
     function getDomain(uint256 _id) public view returns (Domain memory)
     {
         return domains[_id];
+    }
+
+    function getBalance() public view returns (uint256)
+    {
+        return address(this).balance;
     }
 
 }
