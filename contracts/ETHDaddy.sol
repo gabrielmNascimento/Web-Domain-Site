@@ -57,4 +57,9 @@ contract ETHDaddy is ERC721{
         return address(this).balance;
     }
 
+    function withdraw() public onlyOwner {
+        (bool success, ) = owner.call{value: address(this).balance}("");
+        require(success);
+    }
+
 }
