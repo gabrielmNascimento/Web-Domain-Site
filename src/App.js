@@ -19,7 +19,7 @@ function App() {
 
       <div className='cards__section'>
 
-        <h2 className='cards__title'>Welcome to ETH Daddy</h2>
+        <h2 className='cards__title'>Welcome to ETH Daddy!</h2>
 
       </div>
 
