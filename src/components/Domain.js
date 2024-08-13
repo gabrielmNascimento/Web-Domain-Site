@@ -2,9 +2,44 @@ import { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 
 const Domain = ({ domain, ethDaddy, provider, id }) => {
+  const [owner, setOwner] = useState(null)
+  const [hasSold, setHasSold] = useState(false)
+
+  const getOwner = async () => {
+    if(domain.isOwned || hasSold)
+    {
+      const owner = await ethDaddy.ownerOf(id)
+      setOwner(owner)
+    }
+  }
+
+  const buyHandler = async () => {
+    const signer = await provider.getSigner()
+    const transaction = await ethDaddy.connect(signer).mint(id, {value: domain.price})
+    await transaction.wait()
+  }
+
+  useEffect(() => {
+    getOwner()
+  }, [hasSold])
 
   return (
     <div className='card'>
+      <div className='card__info'>
+        <h3>{domain.isOwned || owner ? (<del>{domain.name}</del>) : (<>{domain.name}</>)}</h3>
+        <p>
+        <>
+          <strong>
+            {ethers.utils.formatUnits(domain.price.toString(), 'ether')}
+          </strong>
+          ETH
+        </>
+      </p>
+      </div>
+
+      <button type='button' className='card__button' onClick={() => buyHandler()}>
+        Buy it
+      </button>
 
     </div>
   );
