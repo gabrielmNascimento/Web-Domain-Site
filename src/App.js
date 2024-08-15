@@ -25,7 +25,6 @@ function App() {
     setProvider(provider)
 
     const network = await provider.getNetwork()
-    console.log(network)
 
     const ethDaddy = new ethers.Contract(config[network.chainId].ETHDaddy.address, ETHDaddy, provider)
     setETHDaddy(ethDaddy)
