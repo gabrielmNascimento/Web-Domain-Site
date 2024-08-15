@@ -28,12 +28,23 @@ const Domain = ({ domain, ethDaddy, provider, id }) => {
       <div className='card__info'>
         <h3>{domain.isOwned || owner ? (<del>{domain.name}</del>) : (<>{domain.name}</>)}</h3>
         <p>
-        <>
-          <strong>
-            {ethers.utils.formatUnits(domain.price.toString(), 'ether')}
-          </strong>
-          ETH
-        </>
+          {domain.isOwned || owner ? (
+            <>
+              <small>
+                Owned by: <br />
+                <span>
+                  {owner && owner.slice(0, 6) + '...' + owner.slice(38, 42)}
+                </span>
+              </small>
+            </>
+          ):(
+            <>
+              <strong>
+                {ethers.utils.formatUnits(domain.price.toString(), 'ether')}
+              </strong>
+              ETH
+            </>
+          )}
       </p>
       </div>
 
