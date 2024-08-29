@@ -17,6 +17,8 @@ const Domain = ({ domain, ethDaddy, provider, id }) => {
     const signer = await provider.getSigner()
     const transaction = await ethDaddy.connect(signer).mint(id, {value: domain.price})
     await transaction.wait()
+
+    setHasSold(true)
   }
 
   useEffect(() => {
@@ -47,10 +49,12 @@ const Domain = ({ domain, ethDaddy, provider, id }) => {
           )}
       </p>
       </div>
-
-      <button type='button' className='card__button' onClick={() => buyHandler()}>
-        Buy it
-      </button>
+      
+      {!domain.isOwned && !owner && (
+        <button type='button' className='card__button' onClick={() => buyHandler()}>
+          Buy it
+        </button>
+      )}
 
     </div>
   );

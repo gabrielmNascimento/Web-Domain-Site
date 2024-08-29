@@ -29,7 +29,7 @@ function App() {
     const ethDaddy = new ethers.Contract(config[network.chainId].ETHDaddy.address, ETHDaddy, provider)
     setETHDaddy(ethDaddy)
 
-    const maxSupply = await ethDeploy.maxSupply()
+    const maxSupply = await ethDaddy.maxSupply()
     const domains = []
 
     for(var i = 1; 1 <= maxSupply; i++)
